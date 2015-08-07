@@ -23,7 +23,8 @@ end
 
 ###############################################################################
 # Now, I'll test sampling following growth. Remember, to call `normalize!` 
-# prior to sampling, following a `push!`. 
+# prior to sampling, following a `push!`. This is a dumb test, since it can
+# stochastically fail. 
 ###############################################################################
 
 xs = collect(1:4)

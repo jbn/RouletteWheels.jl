@@ -1,6 +1,6 @@
 # RouletteWheels
 
-A package of [fitness proportionate selection](https://en.wikipedia.org/wiki/Fitness_proportionate_selection), or Roulette Wheels. 
+A package of [fitness proportionate selection](https://en.wikipedia.org/wiki/Fitness_proportionate_selection) algorithms, or Roulette Wheels. 
 
 The root type for all the algorithms is `RouletteWheel`. Each algorithm is a 
 subtype of this abstract type. There are three algorithms: `LinearWalk`, 

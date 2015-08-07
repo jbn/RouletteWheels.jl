@@ -77,3 +77,4 @@ Take this package with a grain of salt.
 
 - Add `auto_tune` function. It should return a RouletteWheel that is optimal 
 given a specific usage pattern. 
+- Add smarter tests. Stochastic failure is dumb.

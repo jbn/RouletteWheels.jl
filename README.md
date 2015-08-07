@@ -1,7 +1,7 @@
 RouletteWheels.jl
 ===
 
-[![Build Status](https://travis-ci.org/jbn/RouletteWheels.jl.svg?branch=master)](https://travis-ci.org/JuliaStats/RouletteWheels.jl)
+[![Build Status](https://travis-ci.org/jbn/RouletteWheels.jl.svg?branch=master)](https://travis-ci.org/jbn/RouletteWheels.jl)
 [![RouletteWheels](http://pkg.julialang.org/badges/jbn/RouletteWheels_release.svg)](http://pkg.julialang.org/?pkg=RouletteWheels&ver=release)
 
 A Julia package for [fitness proportionate selection](https://en.wikipedia.org/wiki/Fitness_proportionate_selection), or Roulette Wheels. 

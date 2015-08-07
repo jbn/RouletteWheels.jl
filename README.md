@@ -1,6 +1,20 @@
-# RouletteWheels
+RouletteWheels.jl
+===
 
-A package of [fitness proportionate selection](https://en.wikipedia.org/wiki/Fitness_proportionate_selection) algorithms, or Roulette Wheels. 
+[![Build Status](https://travis-ci.org/JuliaStats/Distributions.jl.svg?branch=master)](https://travis-ci.org/JuliaStats/Distributions.jl)
+[![Distributions](http://pkg.julialang.org/badges/Distributions_release.svg)](http://pkg.julialang.org/?pkg=Distributions&ver=release)
+
+A Julia package for [fitness proportionate selection](https://en.wikipedia.org/wiki/Fitness_proportionate_selection), or Roulette Wheels. 
+
+Installation
+---
+
+```julia
+Pkg.add("RouletteWheels")
+```
+
+Usage
+---
 
 The root type for all the algorithms is `RouletteWheel`. Each algorithm is a 
 subtype of this abstract type. There are three algorithms: `LinearWalk`, 
@@ -8,6 +22,8 @@ subtype of this abstract type. There are three algorithms: `LinearWalk`,
 iterable of frequencies or proportions. 
 
 ```julia
+using RouletteWheels
+
 wheel = StochasticAcceptance(1:10)
 ```
 

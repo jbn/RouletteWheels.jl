@@ -9,6 +9,8 @@ notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.test("Coverage"; coverage=true)'
+script:
+  - julia -e 'Pkg.clone(pwd()); Pkg.build("RouletteWheels")'
+  - julia -e 'Pkg.test("RouletteWheels"; coverage=true)'
 after_success:
-  - julia -e 'cd(Pkg.dir("Coverage")); using Coverage; Coveralls.submit(process_folder())'
+  - julia -e 'cd(Pkg.dir("RouletteWheels")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'

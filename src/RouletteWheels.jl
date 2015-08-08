@@ -4,10 +4,12 @@ export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance
 export rand_tally, normalize!
 
 import Base.done
+import Base.getindex
 import Base.length
 import Base.next
 import Base.push!
 import Base.rand
+import Base.setindex
 import Base.start
 
 abstract RouletteWheel

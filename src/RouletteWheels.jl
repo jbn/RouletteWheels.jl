@@ -9,7 +9,7 @@ import Base.length
 import Base.next
 import Base.push!
 import Base.rand
-import Base.setindex
+import Base.setindex!
 import Base.start
 
 abstract RouletteWheel

@@ -23,30 +23,30 @@ end
 
 ###############################################################################
 # Now, I'll test sampling following growth. Remember, to call `normalize!` 
-# prior to sampling, following a `push!`. This is a dumb test, since it can
-# stochastically fail. 
+# prior to sampling, following a `push!`. I should add a statistical test
+# for distribution comparisons. 
 ###############################################################################
 
-xs = collect(1:4)
-expected_xs = round(xs / sum(xs) * 100)
-ys = [xs..., 1]
-expected_ys = round(ys / sum(ys) * 100)
+function test_ascending(tallies)
+    sliding_windows = zip(tallies[1:end-1], tallies[2:end])
+    @test all(pair -> pair[1] < pair[2], sliding_windows)
+end
+
+xs = collect(1:5)
 
 for algo in algos
     selector = algo(xs)
-    res_xs = rand_tally(selector, 300000)
-    res_xs = round(res_xs / sum(res_xs) * 100)
-    @test round(res_xs) == expected_xs
+    test_ascending(rand_tally(selector, 1000))
     
     # Cheap test of iterator interface conformity.
     @test collect(selector) == xs
     
     # push! then normalize.
     push!(selector, 1)
-    @test length(selector) == 5
+    @test length(selector) == 6
     normalize!(selector)
     
-    res_ys = rand_tally(selector, 300000)
-    res_ys = round(res_ys / sum(res_ys) * 100)
-    @test round(res_ys) == expected_ys
+    tally = rand_tally(selector, 300000)
+    test_ascending(tally[1:5])
+    @test tally[6] < tally[2]
 end

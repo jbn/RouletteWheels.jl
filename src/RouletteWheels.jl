@@ -39,6 +39,12 @@ end
 
 normalize!(sampler::RouletteWheel) = sampler
 
+
+##############################################################################
+# Asymptotics:
+# - Sampling:    O(n)
+# - Normalizing: O(0)
+##############################################################################
 type LinearWalk{T <: Real} <: RouletteWheel
     freqs::Vector{T}
     total::T
@@ -71,6 +77,11 @@ type BisectingSearch{T <: Real} <: RouletteWheel
     cdf::Vector{Float64}
 end
 
+##############################################################################
+# Asymptotics:
+# - Sampling:    O(log n)
+# - Normalizing: O(n)
+##############################################################################
 function BisectingSearch(freqs)
     total = sum(freqs)
     cdf = zeros(Float64, length(freqs))
@@ -101,6 +112,19 @@ end
 
 rand(sampler::BisectingSearch) = searchsortedfirst(sampler.cdf, rand())
 
+
+##############################################################################
+# Asymptotics:
+# - Sampling:    O(1)
+# - Normalizing: O(0)
+#
+# See:
+#    Lipowski, Adam, and Dorota Lipowska. "Roulette-wheel selection via 
+#    stochastic acceptance." Physica A: Statistical Mechanics and its 
+#    Applications 391, no. 6 (2012): 2193-2196.
+#
+#    http://www.sciencedirect.com/science/article/pii/S0378437111009010
+##############################################################################
 type StochasticAcceptance{T <: Real} <: RouletteWheel
     freqs::Vector{T}
     max_value::T

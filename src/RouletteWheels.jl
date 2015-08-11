@@ -150,7 +150,7 @@ function rand(sampler::StochasticAcceptance)
     idxs = 1:length(sampler)
     while true
         i = rand(idxs)
-        if rand() < @inbounds(sampler.freqs[i]) / sampler.max_value
+        @inbounds if rand() < sampler.freqs[i] / sampler.max_value
             return i
         end
     end

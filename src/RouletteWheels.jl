@@ -26,13 +26,13 @@ rand(sampler::RouletteWheel, n) = [rand(sampler) for i in 1:n]
 
 function push!(sampler::RouletteWheel, x)
     push!(sampler.freqs, 0)
-    sampler[length(sampler)] = x
+    @inbounds sampler[length(sampler)] = x
 end
 
 function rand_tally(sampler::RouletteWheel, n) 
     tallies = zeros(Int, length(sampler))
     for i in 1:n
-        tallies[rand(sampler)] += 1
+        @inbounds tallies[rand(sampler)] += 1
     end
     tallies
 end
@@ -64,7 +64,7 @@ function rand(sampler::LinearWalk)
     accum = 0.0
     terminal_cdf_point = rand() * sampler.total
     for i = 1:length(sampler)
-        accum += sampler.freqs[i]
+        @inbounds accum += sampler.freqs[i]
         if accum > terminal_cdf_point
             return i
         end
@@ -95,17 +95,16 @@ function setindex!(sampler::BisectingSearch, x, i)
 end
 
 function push!(sampler::BisectingSearch, x)
-    # How can I call the lower-specificity method?
     push!(sampler.freqs, 0)
     push!(sampler.cdf, 0)
-    sampler[length(sampler)] = x
+    sampler[length(sampler)] = x 
 end
 
 function normalize!(sampler::BisectingSearch)
     accum = 0.0
     for (i, freq) in enumerate(sampler.freqs)
         accum += freq / sampler.total
-        sampler.cdf[i] = accum
+        @inbounds sampler.cdf[i] = accum
     end
     sampler
 end
@@ -151,7 +150,7 @@ function rand(sampler::StochasticAcceptance)
     idxs = 1:length(sampler)
     while true
         i = rand(idxs)
-        if rand() < sampler.freqs[i] / sampler.max_value
+        if rand() < @inbounds(sampler.freqs[i]) / sampler.max_value
             return i
         end
     end

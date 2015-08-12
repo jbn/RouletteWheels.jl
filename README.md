@@ -2,7 +2,8 @@ RouletteWheels.jl
 ===
 
 [![Build Status](https://travis-ci.org/jbn/RouletteWheels.jl.svg?branch=master)](https://travis-ci.org/jbn/RouletteWheels.jl)
-[![RouletteWheels](http://pkg.julialang.org/badges/jbn/RouletteWheels_release.svg)](http://pkg.julialang.org/?pkg=RouletteWheels&ver=release)
+[![RouletteWheels](http://pkg.julialang.org/badges/RouletteWheels_0.3.svg)](http://pkg.julialang.org/?pkg=RouletteWheels&ver=release)
+[![RouletteWheels](http://pkg.julialang.org/badges/RouletteWheels_0.4.svg)](http://pkg.julialang.org/?pkg=RouletteWheels&ver=nightly)
 [![Coverage Status](https://coveralls.io/repos/jbn/RouletteWheels.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbn/RouletteWheels.jl?branch=master)
 [![Build status](https://ci.appveyor.com/api/projects/status/097d6yxplrk8etp7?svg=true)](https://ci.appveyor.com/project/jbn/roulettewheels-jl)
 

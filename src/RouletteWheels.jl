@@ -3,6 +3,7 @@ module RouletteWheels
 using Compat
 
 import Base.done
+import Base.eltype
 import Base.getindex
 import Base.length
 import Base.next
@@ -12,7 +13,7 @@ import Base.setindex!
 import Base.start
 
 export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance
-export rand_tally, normalize!#, rand
+export rand_tally, normalize!, WheelFromDict
 
 abstract RouletteWheel
 
@@ -182,6 +183,6 @@ type WheelFromDict
     end
 end
 
-Base.rand(wheel::WheelFromDict) = wheel.key_vector[rand(wheel.wheel)]
+rand(wheel::WheelFromDict) = wheel.key_vector[rand(wheel.wheel)]
 
 end 

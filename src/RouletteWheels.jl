@@ -1,7 +1,6 @@
 module RouletteWheels
 
-export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance
-export rand_tally, normalize!
+using Compat
 
 import Base.done
 import Base.getindex
@@ -11,6 +10,9 @@ import Base.push!
 import Base.rand
 import Base.setindex!
 import Base.start
+
+export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance
+export rand_tally, normalize!#, rand
 
 abstract RouletteWheel
 
@@ -155,5 +157,31 @@ function rand(sampler::StochasticAcceptance)
         end
     end
 end
+
+##############################################################################
+# TODO: XXX: Clean up the following code.
+# It lets the user wrap a dictionary. The keys are what you want to sample. 
+# The values are the frequencies.
+##############################################################################
+
+type WheelFromDict
+    wheel
+    key_vector
+    mapping
+    
+    function WheelFromDict(d, wheel_algo)
+        ks = @compat Vector{eltype(keys(d))}()
+        freqs = @compat Vector{eltype(values(d))}()
+        mapping = copy(d)
+        for (k, v) = d
+            push!(ks, k)
+            push!(freqs, v)
+        end
+        
+        new(wheel_algo(freqs), ks, mapping)
+    end
+end
+
+Base.rand(wheel::WheelFromDict) = wheel.key_vector[rand(wheel.wheel)]
 
 end 

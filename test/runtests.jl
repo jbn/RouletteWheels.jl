@@ -1,5 +1,6 @@
 using RouletteWheels
 using Base.Test
+using Compat
 
 const algos = [LinearWalk, BisectingSearch, StochasticAcceptance]
 
@@ -50,3 +51,25 @@ for algo in algos
     test_ascending(tally[1:5])
     @test tally[6] < tally[2]
 end
+
+###############################################################################
+# Test the WheelFromDict wrapper.
+###############################################################################
+
+d = @compat Dict{Symbol, Int}(:red => 1, :green => 2, :blue => 3)
+wheel = WheelFromDict(d)
+
+@test length(wheel) == 3
+
+for (k, v) in wheel
+    @test k ∈ keys(d)
+    @test v == d[k]
+end
+
+sampled_d = rand_dict(wheel, 1000)
+@test sampled_d[:red] < sampled_d[:green] < sampled_d[:blue]
+
+wheel[:gold] = 4
+normalize!(wheel)
+sampled_d = rand_dict(wheel, 1000)
+@test sampled_d[:red] < sampled_d[:green] < sampled_d[:blue] < sampled_d[:gold]

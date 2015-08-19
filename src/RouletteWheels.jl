@@ -13,7 +13,7 @@ import Base.setindex!
 import Base.start
 
 export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance
-export rand_tally, normalize!, WheelFromDict
+export rand_tally, normalize!, WheelFromDict, rand_dict
 
 abstract RouletteWheel
 
@@ -21,6 +21,8 @@ start(sampler::RouletteWheel) = start(sampler.freqs)
 next(sampler::RouletteWheel, i) = next(sampler.freqs, i)
 done(sampler::RouletteWheel, i) = done(sampler.freqs, i)
 length(sampler::RouletteWheel) = length(sampler.freqs)
+
+# XXX: BUG: FIX
 eltype(sampler::RouletteWheel) = eltype(sampler.freqs)
 
 getindex(sampler::RouletteWheel, i) = sampler.freqs[i]
@@ -141,7 +143,7 @@ function setindex!(sampler::StochasticAcceptance, x, i)
     last_x = sampler.freqs[i]
         
     if x > sampler.max_value
-        max_value = x
+        sampler.max_value = x
     elseif last_x == sampler.max_value && x < last_x
         sampler.max_value = maximum(sampler.freqs)
     end
@@ -159,24 +161,30 @@ function rand(sampler::StochasticAcceptance)
     end
 end
 
-##############################################################################
-# TODO: XXX: Clean up the following code.
-# It lets the user wrap a dictionary. The keys are what you want to sample. 
-# The values are the frequencies.
+
 ##############################################################################
 
+"""
+A `WheelFromDict` acts like a dictionary that you can sample from. 
+
+It samples the keys; the value associated with a key is the frequency. 
+The initial passed-in dictionary is no kept as a reference. It is only 
+used to build the initial WheelFromDict. But, you can add new keys at 
+will.
+"""
 type WheelFromDict
     wheel
     key_vector
     mapping
     
-    function WheelFromDict(d, wheel_algo)
+    function WheelFromDict(d, wheel_algo=StochasticAcceptance)
         ks = @compat Vector{eltype(keys(d))}()
         freqs = @compat Vector{eltype(values(d))}()
-        mapping = copy(d)
-        for (k, v) = d
+        mapping = @compat Dict{eltype(keys(d)), Int}()
+        for (i, (k, v)) = enumerate(d)
             push!(ks, k)
             push!(freqs, v)
+            mapping[k] = i
         end
         
         new(wheel_algo(freqs), ks, mapping)
@@ -184,5 +192,42 @@ type WheelFromDict
 end
 
 rand(wheel::WheelFromDict) = wheel.key_vector[rand(wheel.wheel)]
+
+start(sampler::WheelFromDict) = 1
+function next(sampler::WheelFromDict, i) 
+    ((sampler.key_vector[i], sampler.wheel[i]), i + 1)
+end
+done(sampler::WheelFromDict, i) = i > length(sampler)
+length(sampler::WheelFromDict) = length(sampler.key_vector)
+
+function eltype(sampler::WheelFromDict) 
+    eltype((sampler.key_vector, sampler.wheel.freqs))
+end
+
+rand(sampler::WheelFromDict, n) = [rand(sampler) for i in 1:n]
+
+getindex(sampler::WheelFromDict, i) = sampler.wheel[i]
+
+function setindex!(sampler::WheelFromDict, freq, k)
+    if k ∈ keys(sampler.mapping)
+        i = sampler.mapping[k]
+        sampler.wheel[i] = freq
+    else
+        push!(sampler.wheel, freq)
+        push!(sampler.key_vector, k)
+        sampler.mapping[k] = length(sampler.key_vector)
+    end
+end
+
+normalize!(sampler::WheelFromDict) = normalize!(sampler.wheel)
+
+function rand_dict(wheel::WheelFromDict, n)
+    d = (eltype(wheel.key_vector) => Int)[k => 0 for (k, _) in wheel]
+    for i in 1:n
+        d[rand(wheel)] += 1
+    end
+    d
+end
+
 
 end 

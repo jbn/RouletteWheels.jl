@@ -13,7 +13,7 @@ import Base.setindex!
 import Base.start
 
 export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance
-export rand_tally, normalize!, WheelFromDict, rand_dict
+export rand_tally, normalize!, WheelFromDict, rand_dict, select_fastest
 
 abstract RouletteWheel
 
@@ -229,5 +229,32 @@ function rand_dict(wheel::WheelFromDict, n)
     d
 end
 
+##############################################################################
+
+ALGOS = [LinearWalk, BisectingSearch, StochasticAcceptance]
+
+"""
+Given the access and mutation usage embodied by f, estimate the fastest algo. 
+
+It returns a pair of the fastest algorithm and a dictionary with all timings.
+"""
+function select_fastest(f::Function, freqs)
+    fastest_time = typemax(Float64)
+    fastest_algo = LinearWalk
+    
+    timings = [algo => 0.0 for algo in ALGOS]
+    for algo in keys(timings)
+        tic()
+        wheel = algo(freqs)
+        f(wheel)
+        t = toq()
+        if t < fastest_time
+            fastest_time = t
+            fastest_algo = algo
+        end
+        timings[algo] = t
+    end
+    fastest_algo, timings
+end
 
 end 

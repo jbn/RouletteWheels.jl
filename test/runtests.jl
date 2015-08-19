@@ -73,3 +73,14 @@ wheel[:gold] = 4
 normalize!(wheel)
 sampled_d = rand_dict(wheel, 1000)
 @test sampled_d[:red] < sampled_d[:green] < sampled_d[:blue] < sampled_d[:gold]
+
+###############################################################################
+# Test select_fastest.
+###############################################################################
+fastest, all_timings = select_fastest(1:3) do wheel
+    for _ in 1:1000
+        rand(wheel)
+    end
+end
+@test length(all_timings) == 3
+@test all_timings[fastest] == minimum(values(all_timings))

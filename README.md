@@ -100,6 +100,22 @@ And, it is fast, *assuming few mutations on the frequencies.*
 `StochasticAcceptance` tends to perform the best, given frequent mutation. 
 See: [Fast Proportional Selection Algorithms](http://jbn.github.io/fast_proportional_selection/) for a discussion. 
 
+Asymptotics and real-world performance are often quiet different. For example, 
+`LinearSearch` is very fast for small `n`. It's striding memory consecutively. 
+Therefore, it is often useful to estimate the fastest algorithm. To do so , 
+use `select_fastest`. It takes a function to simulate your expected usage 
+patterns and an initial set of frequencies. But, take the estimates with a 
+grain of salt. The function only uses `tic` and `toq`.
+
+```julia
+fastest, all_timings = select_fastest(1:10) do wheel
+    for _ in 1:100000
+        rand(wheel)
+    end
+end
+fastest # => LinearWalk 
+```
+
 ## Warning
 
 I'm a seasoned programmer. But, I started learning Julia in late-July, 2015. 
@@ -107,6 +123,4 @@ Take this package with a grain of salt.
 
 ## Todo
 
-- Add `auto_tune` function. It should return a RouletteWheel that is optimal 
-given a specific usage pattern. 
 - Fix `eltype` definitions. They are wrong.

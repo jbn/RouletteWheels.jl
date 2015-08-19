@@ -124,3 +124,4 @@ Take this package with a grain of salt.
 ## Todo
 
 - Fix `eltype` definitions. They are wrong.
+- Add more extensive readthedocs-style documentation.

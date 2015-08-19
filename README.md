@@ -59,11 +59,41 @@ You can also collect a sample of size n.
 rand(wheel, 10)
 ```
 
-Finally,  you can collect a set random tally for each index over n tallies.
+You can also collect a set random tally for each index over n tallies.
 
 ```julia
 rand_tally(wheel, 100) 
 ```
+
+Often, you want to sample a key rather than an index. The `WheelFromDict` 
+wrapper makes this convenient. The constructor takes and copies a dictionary 
+mapping key to frequency. It optionally takes the algorithm to use for the 
+underlying roulette wheel. 
+
+This wrapper does not implement `push!`. Instead, you set in index just as you 
+would for a `Dict`. You must still call normalize after finishing all 
+modifications. 
+
+```julia
+wheel = WheelFromDict(
+    @compat Dict{Symbol, Int}(:red => 1, :green => 2, :blue => 3)
+)
+rand(wheel) #=> :green
+```
+
+You can also collect a dictionary built from repeated samples. The values are the sampled frequencies.
+
+```julia
+rand_dict(wheel, 100)
+``` 
+
+Asymptotics
+---
+| Algorithm | Sampling | Normalizing |
+| :---: | ---: | ---: |
+| `LinearSearch`         |  O(n)   | O(0)    |
+| `BisectingSearch`      |  O(log n)   | O(n)    |
+| `StochasticAcceptance` |  O(1)   | O(0)    |
 
 `BisectingSearch` has low jitter, making it suitable for real-time operations. 
 And, it is fast, *assuming few mutations on the frequencies.* 
@@ -79,3 +109,4 @@ Take this package with a grain of salt.
 
 - Add `auto_tune` function. It should return a RouletteWheel that is optimal 
 given a specific usage pattern. 
+- Fix `eltype` definitions. They are wrong.

@@ -11,7 +11,7 @@ RouletteWheels.jl
 
 ## Documentation and Examples
 
-See: [![Documentation Status](https://readthedocs.org/projects/roulettewheelsjl/badge/?version=latest)](https://readthedocs.org/projects/roulettewheelsjl/?badge=latest)
+See: [![Documentation Status](https://readthedocs.org/projects/roulettewheelsjl/badge/?version=latest)](http://roulettewheelsjl.readthedocs.org/en/latest/)
 
 ## Warning
 

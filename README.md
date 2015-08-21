@@ -9,7 +9,9 @@ RouletteWheels.jl
 
 **A Julia package for *[fitness proportionate selection](https://en.wikipedia.org/wiki/Fitness_proportionate_selection)*, or *roulette wheels*.**
 
-See: [![Documentation Status](https://readthedocs.org/projects/mochajl/badge/?version=latest)](http://mochajl.readthedocs.org/)
+## Documentation and Examples
+
+See: [![Documentation Status](https://readthedocs.org/projects/roulettewheelsjl/badge/?version=latest)](https://readthedocs.org/projects/roulettewheelsjl/?badge=latest)
 
 ## Warning
 

@@ -14,6 +14,10 @@ import Base.rand
 import Base.setindex!
 import Base.start
 
+if isdefined(Base, :normalize!)  # For 0.5.X
+    import Base.normalize!
+end
+
 export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance
 export rand_tally, normalize!, WheelFromDict, rand_dict, select_fastest
 

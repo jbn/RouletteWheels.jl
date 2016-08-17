@@ -16,6 +16,8 @@ import Base.start
 
 if isdefined(Base, :normalize!)  # For 0.5.X
     import Base.normalize!
+elseif isdefined(Compat, :normalize!)
+    import Compat.normalize!
 end
 
 export RouletteWheel, LinearWalk, BisectingSearch, StochasticAcceptance

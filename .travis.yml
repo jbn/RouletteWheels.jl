@@ -5,13 +5,13 @@ os:
 julia:
     - 0.3
     - 0.4
+    - 0.5
     - nightly
 notifications:
   email: false
-script:
-  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-script:
-  - julia -e 'Pkg.clone(pwd()); Pkg.build("RouletteWheels")'
-  - julia -e 'Pkg.test("RouletteWheels"; coverage=true)'
+#script: # use default script setting which is equivalent to the following
+#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+#  - julia -e 'Pkg.clone(pwd()); Pkg.build("RouletteWheels")'
+#  - julia -e 'Pkg.test("RouletteWheels"; coverage=true)'
 after_success:
   - julia -e 'cd(Pkg.dir("RouletteWheels")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
